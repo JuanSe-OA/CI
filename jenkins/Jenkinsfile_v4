@@ -8,34 +8,26 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                timeout(time: 7, unit: 'MINUTES') {
-                    git branch: 'main', url: 'https://github.com/Sebasjc19/java-edu.git'
-                }
+                git branch: 'main', url: 'https://github.com/Sebasjc19/java-edu.git'
             }
         }
 
         stage('Build') {
             steps {
-                timeout(time: 7, unit: 'MINUTES') {
-                    sh "mvn -DskipTests clean package"
-                }
+                sh "mvn -DskipTests clean package"
             }
         }
 
         stage('Test') {
             steps {
-                timeout(time: 7, unit: 'MINUTES') {
-                    sh "mvn clean install"
-                }
+                sh "mvn clean install"
             }
         }
 
         stage('Sonar') {
             steps {
-                timeout(time: 7, unit: 'MINUTES') {
-                    withSonarQubeEnv('sonarqube') {
-                        sh "mvn sonar:sonar"
-                    }
+                withSonarQubeEnv('sonarqube') {
+                    sh "mvn sonar:sonar"
                 }
             }
         }
@@ -43,9 +35,7 @@ pipeline {
         stage('Quality gate') {
             steps {
                 sleep(10)
-                timeout(time: 7, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
+                waitForQualityGate abortPipeline: true
             }
         }
 
@@ -57,5 +47,6 @@ pipeline {
         }
     }
 }
+
 // This Jenkinsfile is a declarative pipeline for building, testing, and deploying a Java application using Maven.
 // It includes stages for cloning the repository, building the project, running tests, performing static code analysis with SonarQube,
